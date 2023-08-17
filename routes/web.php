@@ -19,6 +19,8 @@ use App\Http\Controllers\VentasController;
 use App\Http\Controllers\VenderController;
 use App\Http\Controllers\ComprarController;
 use App\Http\Controllers\ComprasController;
+use App\Http\Controllers\Controller;
+
 
 
 use Barryvdh\DomPdf\Facade\Pdf;
@@ -34,24 +36,22 @@ use Barryvdh\DomPdf\Facade\Pdf;
 |
 */
 
-//Route::get('/', function () {
-    //$pdf=App::make('dompdf.wrapper');
-    //$pdf=app('dompdf.wrapper');
-    //$pdf->loadHtml('<h1>Este es mi pdf helper</h1>');
-  //  $pdf->loadView('pdfs.pdf');
-    //$pdf=Pdf::loadHtml('<h1>Este es mi pdf helper PDF</h1>');
-//    return $pdf->stream();
-//});
-//Route::get('/', function () {
-//    return view('layouts.admin');
-//});
+
 Route::get('/', function () {
-  return view('layouts.amd');
+    return view('layouts.amd');
 });
+/*Route::get('/', function () {
+  return view('layouts.amd');
+});*/
 
 //Route::resource('almacen/categoria','CategoriaController');
 //Route::resource('almacen/categoria', CategoriaController::class);
 Auth::routes();
+Route::get('categories/pdf2',[Controller::class,'imprimir'])->name('imprimir');
+Route::get('visita/visitas/pdf',[VisitaController::class, 'imprimir'])->name('visitas.pdf');
+Route::get('categories/pdf',[CategoryController::class, 'imprime'])->name('category.pdf');
+Route::get('pdf',[ProductController::class, 'pdf'])->name('catalogoproducto.pdf');
+Route::get("ventas_pdf/{venta}", [VentasController::class,'pdf'])->name("ventas_pdf");
 
 Route::resource('categories', CategoryController::class)->names('categories');
 Route::resource('clients', ClientController::class)->names('clients');
@@ -73,7 +73,7 @@ Route::patch('products/update_cart',[ProductController::class,'updatecart'])->na
 //Route::get('purchases/pdf/{purchase}','PurchaseController@pdf')->name('purchases.pdf');
 Route::get('purchases/pdf/{purchase}',[PurchaseController::class,'pdf'])->name('purchases.pdf');
 Route::get('sales/pdf/{sale}',[SaleController::class,'pdf'])->name('sales.pdf');
-Route::get('categories/pdf/{category}','CategoryController@pdf')->name('categories.pdf');
+
 
 Route::get('products/change_status/{product}',[ProductController::class, 'change_status'])->name('change_status');
 
@@ -101,11 +101,14 @@ Auth::routes();
 
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('home_amd', [HomeController::class, 'index'])->name('home');
 Route::resource('/cart', CartController::class);
 Route::get('livewire.purchases/create/{Cart}','Create@render')->name('Cart.purchases');
 Route::post('/Cart-add',[CartController::class,'add'])->name('cart.add');
 Route::get('/Cart-checkout',[CartController::class,'cart'])->name('cart.checkout');
 Route::post('/Cart-clear',[CartController::class,'clear'])->name('cart.clear');
 Route::get('/Cart-removeitem',[CartController::class,'removeitem'])->name('cart.removeitem');
-Route::get('/cart',[FrontController::class,'index'])->name('atras');
+Route::get('/cart',)->name('atras');
+
+
 
